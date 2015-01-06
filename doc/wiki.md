@@ -1,3 +1,10 @@
+Documentation
+=============
+
+Installation
+------------
+
+
 * Instalar Java 1.7
 sudo apt-get install openjdk-7-jdk
 
@@ -8,7 +15,13 @@ sudo apt-get install scala
 sudo apt-get install eclipse
 eclipse &
 Help > Install new Software > Add
+# Scala IDE
 http://download.scala-ide.org/sdk/helium/e38/scala29/stable/site
+
+#GIT
+http://download.eclipse.org/egit/updates/
+Choose "Eclipse Mylyn to GitHub connector"
+
 
 * Git
 
@@ -18,6 +31,5 @@ http://download.scala-ide.org/sdk/helium/e38/scala29/stable/site
 git remote add synaptic-cryptoaudit https://github.com/synaptic-cl/cryptoaudit.git
 git pull synaptic-cryptoaudit master
 git push
-
 
 
