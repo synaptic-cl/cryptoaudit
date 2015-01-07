@@ -27,9 +27,10 @@ Choose "Eclipse Mylyn to GitHub connector"
 
  * Pull request
  
- * Merge changes of main repostiry  (http://stackoverflow.com/questions/867831/merge-changes-from-remote-github-repository-to-your-local-repository)
-git remote add synaptic-cryptoaudit https://github.com/synaptic-cl/cryptoaudit.git
-git pull synaptic-cryptoaudit master
-git push
+ * [Merge changes of main repository] (http://stackoverflow.com/questions/867831/merge-changes-from-remote-github-repository-to-your-local-repository)
+
+`git remote add synaptic-cryptoaudit https://github.com/synaptic-cl/cryptoaudit.git`
+`git pull synaptic-cryptoaudit master`
+`git push`
 
 
