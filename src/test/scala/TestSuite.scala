@@ -5,7 +5,6 @@
 package test.scala
 
 import org.scalatest.FunSuite
-import main.scala.HolaMundo._
 
 class TestSuite extends FunSuite {
 
@@ -19,10 +18,5 @@ class TestSuite extends FunSuite {
     }
   }
 
-  test("Use our SHA1 function defined in HolaMundo") {
-    var message: String = "test"
-    var firstHash = mySha1(message)
-    var secondHash = mySha1(message)
-    assert(firstHash.deep == secondHash.deep)
-  }
+
 }
