@@ -5,7 +5,7 @@ import main.scala.hash.Hash
 /**
  * Created by fquintanilla on 12-01-15.
  */
-class MerkleTree[N <: MerkleNode](elements : IndexedSeq[String], hash : Hash){
+class MerkleTree[N <: MerkleNode](elements : IndexedSeq[String], hash : Hash)(implicit m : Manifest[N]){
 
   /**
    * Calculates the height required to contain the given IndexedSeq
@@ -21,7 +21,7 @@ class MerkleTree[N <: MerkleNode](elements : IndexedSeq[String], hash : Hash){
   //Initialize lowest level with the hashes ef the given elements
   levels(height-1) = new Array[MerkleNode](elements.length)
   for( i <- 0 until elements.length){
-    levels(height-1)(i) = new SimpleMerkleNode(hash.calculateHash(elements(i)))
+    levels(height-1)(i) = MerkleNode.create[N](hash.calculateHash(elements(i)))
   }
   for(currentLevel <- (0 until height-1).reverse){
 
