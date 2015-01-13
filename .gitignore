@@ -20,3 +20,6 @@ project/plugins/project/
 
 #Eclipse specific
 .project
+
+#IntelliJ-Idea specific
+.idea/
