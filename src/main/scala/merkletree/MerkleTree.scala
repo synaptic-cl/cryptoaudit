@@ -7,15 +7,11 @@ import main.scala.hash.Hash
  */
 class MerkleTree[N <: MerkleNode](elements : IndexedSeq[String], hash : Hash)(implicit m : Manifest[N]){
 
-  private val filler = "-"
   /**
-   * Calculates the height required to contain the given IndexedSeq
-   * */
-  private def requiredHeight(strings: IndexedSeq[String]): Int = {
-    val size = strings.length
-    def log2(x: Double): Double = math.log(x) / math.log(2)
-    math.ceil(log2(size)).toInt + 1
-  }
+   * String used to fill the trees if the length of the sequence given is
+   * not a power of two*/
+  private val filler = "-"
+
 
   val height : Int = requiredHeight(elements)
   val levels : Array[Array[MerkleNode]] = new Array[Array[MerkleNode]](height)
@@ -42,11 +38,46 @@ class MerkleTree[N <: MerkleNode](elements : IndexedSeq[String], hash : Hash)(im
     }
   }
 
+  /**
+   * Calculates the height required to contain the given IndexedSeq
+   * */
+  private def requiredHeight(strings: IndexedSeq[String]): Int = {
+    val size = strings.length
+    def log2(x: Double): Double = math.log(x) / math.log(2)
+    math.ceil(log2(size)).toInt + 1
+  }
+
+  /**
+   * Returns a string representing the root of the tree
+   * */
   def root : String = {
     levels(0)(0).value
   }
 
   def getLevels : Array[Array[String]] = for (row <- levels) yield for (column <- row) yield column.value
+
+  /**
+   * Returns an array of Strings representing the proof a given String belongs to the
+   * sequence used to form the tree or an empty array if the given String did not
+   * belong to the sequence
+   * */
+  def verify(element: String) : Option[Array[String]] = {
+    val elmtHash = hash.calculateHash(element)
+    var index : Int = levels(height-1).indexWhere(_.value == elmtHash)
+    if (index == -1) return None
+
+    val proof : Array[String] = new Array[String](height)
+    var currentLevel = height-1
+    while(currentLevel > 0){
+      var sibling = if (index%2 == 0) index+1 else index-1
+      index /= 2
+      proof(currentLevel) = levels(currentLevel)(sibling).value
+      currentLevel -= 1
+    }
+    proof(0) = this.root
+    Some(proof.reverse)
+  }
+
 
 
 }

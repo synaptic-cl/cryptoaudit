@@ -48,5 +48,17 @@ class SimpleMerkleTreeTest extends FunSuite{
     assert(expectedLevels.deep == actualLevels.deep)
   }
 
+  test("The verify method should return an Option with an Array of intermediate hashes as proof" +
+    " a block belongs the the tree") {
+    val seq = Array("a", "b", "c", "d")
+    /*expected values were calculated mannually using online SHA256 calculator*/
+    val tree = new MerkleTree[SimpleMerkleNode](seq, SHA256Hash)
+    val expectedProof = Array("3e23e8160039594a33894f6564e1b1348bbd7a0088d42c4acb73eeaed59c009d",
+                              "d3a0f1c792ccf7f1708d5422696263e35755a86917ea76ef9242bd4a8cf4891a",
+                              "58c89d709329eb37285837b042ab6ff72c7c8f74de0446b091b6a0131c102cfd")
+    val actualProof = tree.verify("a").getOrElse(new Array[String](0))
+    assert(expectedProof.deep == actualProof.deep)
+    assert(None == tree.verify("e"))
+  }
 
 }
