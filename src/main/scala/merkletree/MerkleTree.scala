@@ -1,6 +1,7 @@
 package main.scala.merkletree
 
 import main.scala.hash.Hash
+import merkletree.MerkleTreeProof
 
 /**
  * Created by fquintanilla on 12-01-15.
@@ -57,27 +58,42 @@ class MerkleTree[N <: MerkleNode](elements : IndexedSeq[String], hash : Hash)(im
   def getLevels : Array[Array[String]] = for (row <- levels) yield for (column <- row) yield column.value
 
   /**
-   * Returns an array of Strings representing the proof a given String belongs to the
-   * sequence used to form the tree or an empty array if the given String did not
-   * belong to the sequence
+   * Returns an Option with an array of Strings representing the proof if the given String
+   * belongs to the sequence used to form the tree or None if if it doesn't belong to the sequence
    * */
-  def verify(element: String) : Option[Array[String]] = {
+  def computeProof(element: String) : Option[MerkleTreeProof] = {
     val elmtHash = hash.calculateHash(element)
     var index : Int = levels(height-1).indexWhere(_.value == elmtHash)
+    val elmntIndex = index
     if (index == -1) return None
 
-    val proof : Array[String] = new Array[String](height)
+    val proof : Array[String] = new Array[String](height-1)
     var currentLevel = height-1
     while(currentLevel > 0){
       var sibling = if (index%2 == 0) index+1 else index-1
       index /= 2
-      proof(currentLevel) = levels(currentLevel)(sibling).value
+      proof(currentLevel-1) = levels(currentLevel)(sibling).value
       currentLevel -= 1
     }
-    proof(0) = this.root
-    Some(proof.reverse)
+    val path = proof.reverse
+    Some(new MerkleTreeProof(elmntIndex, path))
   }
 
+}
 
-
+object MerkleTree{
+  def verify(proof : MerkleTreeProof, elmt : String, root : String, hash : Hash) : Boolean = {
+    val left : String = "0"
+    val right : String = "1"
+    var position = proof.position.toBinaryString
+    val pathLength = proof.path.length
+    position = "0" * (pathLength-position.length) + position
+    position = position.reverse
+    var currentHash = hash.calculateHash(elmt)
+    for ((leftOrRight , sibling) <- position zip proof.path){
+      currentHash = if (leftOrRight.toString == left) currentHash + sibling else sibling + currentHash
+      currentHash = hash.calculateHash(currentHash)
+    }
+    currentHash == root
+  }
 }
