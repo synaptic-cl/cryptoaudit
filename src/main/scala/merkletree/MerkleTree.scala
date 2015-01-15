@@ -7,40 +7,36 @@ import merkletree.MerkleTreeProof
  * Created by fquintanilla on 12-01-15.
  */
 class MerkleTree[N <: MerkleNode](elements : IndexedSeq[String], hash : Hash)(implicit m : Manifest[N]){
-
   /**
    * String used to fill the trees if the length of the sequence given is
    * not a power of two*/
-  private val filler = "-"
-
+  private val filler = hash.calculateHash("-")
 
   val height : Int = requiredHeight(elements)
+
   val levels : Array[Array[MerkleNode]] = new Array[Array[MerkleNode]](height)
   //Initialize lowest level with the hashes ef the given elements
-  //If elements.length is not a power of 2 fill the remaining space with "-"
-  levels(height-1) = new Array[MerkleNode](Math.pow(2,height-1).toInt)
+  val numberOfLeaves = Math.pow(2,height-1).toInt
+  levels(height-1) = new Array[MerkleNode](numberOfLeaves)
   val lowestLevel = levels(height-1)
   for( i <- 0 until elements.length){
     lowestLevel(i) = MerkleNode.create[N](hash.calculateHash(elements(i)))
   }
-  for (i <- elements.length until lowestLevel.length)
-    lowestLevel(i) = MerkleNode.create[N](hash.calculateHash(filler))
+  //If elements.length is not a power of 2 fill the remaining space with the filler string
+  for (i <- elements.length until numberOfLeaves)
+    lowestLevel(i) = MerkleNode.create[N](filler)
 
   for(currentLevel <- (0 until height-1).reverse){
-
     //The current level is half the size of the previous one (rounded up)
     val currentLevelSize = (levels(currentLevel+1).length)/2
     levels(currentLevel) = new Array[MerkleNode](currentLevelSize)
     for(j <- 0 until currentLevelSize){
-        if(2*j+1 < levels(currentLevel+1).length)
-          levels(currentLevel)(j) = levels(currentLevel+1)(2*j).join(levels(currentLevel+1)(2*j+1),hash)
-        else
-          levels(currentLevel)(j) = levels(currentLevel+1)(2*j)
+      levels(currentLevel)(j) = levels(currentLevel+1)(2*j).join(levels(currentLevel+1)(2*j+1),hash)
     }
   }
 
   /**
-   * Calculates the height required to contain the given IndexedSeq
+   * Calculates the height of the tree required to contain the given IndexedSeq
    * */
   private def requiredHeight(strings: IndexedSeq[String]): Int = {
     val size = strings.length
@@ -58,8 +54,8 @@ class MerkleTree[N <: MerkleNode](elements : IndexedSeq[String], hash : Hash)(im
   def getLevels : Array[Array[String]] = for (row <- levels) yield for (column <- row) yield column.value
 
   /**
-   * Returns an Option with an array of Strings representing the proof if the given String
-   * belongs to the sequence used to form the tree or None if if it doesn't belong to the sequence
+   * Returns an Option with an instance of a MerkleTreeProof object if the given String
+   * belongs to the sequence used to form the tree or None if it doesn't belong to the sequence
    * */
   def computeProof(element: String) : Option[MerkleTreeProof] = {
     val elmtHash = hash.calculateHash(element)
@@ -82,6 +78,12 @@ class MerkleTree[N <: MerkleNode](elements : IndexedSeq[String], hash : Hash)(im
 }
 
 object MerkleTree{
+
+  /**
+   * Method to verify the validity of a given MerkleTreeProof, receives an instance of MerkleTreeProof
+   * the string of it's corresponding element, the expected MerkleTree root and a Hash object
+   * and returns true if the proof was valid or false otherwise
+   * */
   def verify(proof : MerkleTreeProof, elmt : String, root : String, hash : Hash) : Boolean = {
     val left : String = "0"
     val right : String = "1"
