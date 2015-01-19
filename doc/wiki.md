@@ -24,6 +24,12 @@ Git
 `git pull synaptic-cryptoaudit master`  
 `git push`  
 
+* [Branching model](http://nvie.com/posts/a-successful-git-branching-model/)
+We use three branches:
+ * feature/YYY: for a new feature
+ * dev: for staging
+ * master: for production
+
 IDE
 ---
 
@@ -39,3 +45,8 @@ Compiling - Running Tests
   * File > Project Structure > Global Libraries > Add > Scala SDK > Maven
  * Run the test files (right click on the file)
 
+
+Scala - Links
+-------------
+
+* [List of tools and library for scala](https://wiki.scala-lang.org/display/SW/Tools+and+Libraries)
