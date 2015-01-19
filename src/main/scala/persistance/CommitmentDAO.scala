@@ -1,4 +1,4 @@
-package persistance
+package main.scala.persistance
 
 import com.novus.salat.dao.SalatDAO
 import main.scala.commitment.Commitment
