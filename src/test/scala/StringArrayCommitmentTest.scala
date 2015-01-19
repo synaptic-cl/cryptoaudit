@@ -1,6 +1,6 @@
 package test.scala
 
-import filecommitment.StringArrayCommitment
+import main.scala.filecommitment.StringArrayCommitment
 import main.scala.hash.SHA256Hash
 import main.scala.merkletree.MerkleTree
 import org.scalatest.FunSuite

@@ -1,8 +1,6 @@
-package commitment
+package main.scala.commitment
 
 /**
- * Created by fquintanilla on 14-01-15.
+ * Created by fquintanilla on 19-01-15.
  */
-trait Commitment {
-  def commit(value : String) : (String,String)
-}
+case class Commitment (val value : String, random : String)
