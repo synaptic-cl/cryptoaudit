@@ -15,3 +15,8 @@ Bitcoin
 * [SX library: handling bitcoin operations from the commandline](https://github.com/spesmilo/sx/)
 * [BitconiJ: a bitcoin library written in Java](https://bitcoinj.github.io)
 * [Source code of Proofofexistence by Manuel Aaroz](https://github.com/maraoz/proofofexistence)
+
+MongoDB
+-------
+
+* [Mongo database](http://www.mongodb.org/)
