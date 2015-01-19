@@ -1,3 +1,5 @@
+package test.scala
+
 import main.scala.commitment.Commitment
 import main.scala.persistance.CommitmentDAO
 import org.scalatest.{BeforeAndAfter, FunSuite}
