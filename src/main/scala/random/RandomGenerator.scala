@@ -1,4 +1,4 @@
-package random
+package main.scala.random
 
 import org.bouncycastle.util.encoders.Hex
 
