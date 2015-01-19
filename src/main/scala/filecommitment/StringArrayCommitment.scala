@@ -10,10 +10,12 @@ import merkletree.MerkleTreeProof
  */
 
 class StringArrayCommitment(val lines : Array[String]) {
-  val merkleTree = new MerkleTree[SimpleMerkleNode](lines, SHA256Hash)
+  private val merkleTree = new MerkleTree[SimpleMerkleNode](lines, SHA256Hash)
   val root = merkleTree.root
 
-  val commitment = HashCommitmentFactory.commit(root)
+  private val commitmentObject = HashCommitmentFactory.commit(root)
+  val commitment = commitmentObject.value
+  val random = commitmentObject.random
 
   def proofArray : Array[(String, MerkleTreeProof)] = {
     for (line <- lines) yield (line, merkleTree.computeProof(line).get)
