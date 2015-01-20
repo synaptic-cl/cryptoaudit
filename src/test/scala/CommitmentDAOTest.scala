@@ -36,5 +36,18 @@ class CommitmentDAOTest extends FunSuite with BeforeAndAfter {
     val commitmentFromDB = CommitmentDAO.findByCommitmentValue(testValue)
     assert(commitmentFromDB == None)
   }
+  test("The getIdFromValue method should return a valid id corresponding to the commitment with the given value"){
+    val testValue = "test"
+    val testCommitment = new Commitment(testValue, "random")
+    val id = CommitmentDAO.insert(testCommitment)
+    assert(id != None)
+    val actualId = CommitmentDAO.getIdFromValue(testValue)
+    assert (actualId != None)
+    assert (actualId.get == id.get)
+  }
+  test("The getIdFromValue method should return None if the given value doesn't correspond to any commitment in the database"){
+    val actualId = CommitmentDAO.getIdFromValue("test")
+    assert (actualId == None)
+  }
 
 }
