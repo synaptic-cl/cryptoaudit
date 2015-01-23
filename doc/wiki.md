@@ -39,3 +39,11 @@ Compiling - Running Tests
   * File > Project Structure > Global Libraries > Add > Scala SDK > Maven
  * Run the test files (right click on the file)
 
+Lift
+-----
+
+We use the [Lift](http://liftweb.net/) framework for web development
+* Running server
+ * In the root directory: 'mvn jetty:run'
+ * Default port is 8080 to change run with -Djetty.port=<port> option
+
