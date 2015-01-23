@@ -1,10 +1,12 @@
 package test.scala
 
 import java.math.BigInteger
-
-
-import SecureBroadcastChannel.BitcoinTransaction
 import org.scalatest.FunSuite
+
+
+
+import SecureBroadcastChannel.{BitcoinTransactionException, BitcoinTransaction}
+
 
 class BitcoinTransactionTest extends FunSuite{
 
@@ -25,7 +27,13 @@ class BitcoinTransactionTest extends FunSuite{
   
   test("Raise exception when message is not 40 bytes long"){
     
+    val messageInput= "This message is more than 40 bytes long......................................"
+    val bitcoinPrivateKey = new BigInteger("111048528963322230780084975007062377427337875279347986832075827558776062265379")
+    val transaction = new BitcoinTransaction(messageInput,bitcoinPrivateKey)
     
+    intercept[BitcoinTransactionException] {
+      val hexString = transaction.compute()
+    }
   }
 
 }

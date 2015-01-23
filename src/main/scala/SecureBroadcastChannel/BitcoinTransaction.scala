@@ -7,6 +7,7 @@ import org.bitcoinj.core._
 import org.bitcoinj.params.MainNetParams
 import org.bitcoinj.script.{ScriptOpCodes, ScriptBuilder}
 
+class BitcoinTransactionException(smth:String)  extends Exception
 
 class BitcoinTransaction(val aMessage:String, val aPrivateKey:BigInteger) {
   
@@ -14,6 +15,7 @@ class BitcoinTransaction(val aMessage:String, val aPrivateKey:BigInteger) {
   var privateKey:BigInteger = aPrivateKey
   val networkParams = MainNetParams.get()
   val AMOUNT_MINER_FEE: Int = 10000
+  val EXPECTED_LENGHT_FOR_OP_RETURN_MESSAGES: Int = 40
 
 
   def createKey(): ECKey = {
@@ -40,6 +42,8 @@ class BitcoinTransaction(val aMessage:String, val aPrivateKey:BigInteger) {
     val tx = new Transaction(this.networkParams)
 
     val dataToSend = this.message.getBytes()
+    if (dataToSend.length != EXPECTED_LENGHT_FOR_OP_RETURN_MESSAGES)
+      throw new BitcoinTransactionException("The length of message to be published with OP_RETURN must be equal to " + EXPECTED_LENGHT_FOR_OP_RETURN_MESSAGES.toString())
 
     val key = this.createKey()
     val address:Address = key.toAddress(networkParams)
