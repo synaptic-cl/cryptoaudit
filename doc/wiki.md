@@ -21,14 +21,18 @@ Git
 * [Merge changes of main repository] (http://stackoverflow.com/questions/867831/merge-changes-from-remote-github-repository-to-your-local-repository)
 
 `git remote add synaptic-cryptoaudit https://github.com/synaptic-cl/cryptoaudit.git`  
-`git pull synaptic-cryptoaudit master`  
+`git pull synaptic-cryptoaudit <branch name>`
 `git push`  
 
+
+
 * [Branching model](http://nvie.com/posts/a-successful-git-branching-model/)
+
 We use three branches:
  * feature/YYY: for a new feature
  * dev: for staging
  * master: for production
+
 
 IDE
 ---
