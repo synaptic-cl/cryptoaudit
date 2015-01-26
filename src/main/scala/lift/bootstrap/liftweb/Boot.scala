@@ -1,5 +1,6 @@
 package bootstrap.liftweb
 
+import main.scala.lift.rest.{FileStatusRest, FileUploadRest}
 import net.liftweb._
 import util._
 
@@ -42,5 +43,8 @@ class Boot {
     LiftRules.htmlProperties.default.set((r: Req) =>
       new Html5Properties(r.userAgent))
 
+    // Declaring handlers for REST API
+    LiftRules.statelessDispatch.append(FileUploadRest)
+    LiftRules.statelessDispatch.append(FileStatusRest)
   }
 }
