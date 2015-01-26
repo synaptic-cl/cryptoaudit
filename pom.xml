@@ -7,7 +7,19 @@
     <groupId>groupId</groupId>
     <artifactId>cryptoaudit</artifactId>
     <version>1.0-SNAPSHOT</version>
+
+
     <build>
+        <sourceDirectory>${basedir}/src/</sourceDirectory>
+        <resources>
+            <resource>
+                <directory>${basedir}/conf</directory>
+            </resource>
+            <resource>
+                <directory>${basedir}/public</directory>
+                <targetPath>public</targetPath>
+            </resource>
+        </resources>
 
         <plugins>
             <plugin>
@@ -65,6 +77,48 @@
                 </executions>
             </plugin>
 
+            <plugin>
+                <groupId>org.eclipse.jetty</groupId>
+                <artifactId>jetty-maven-plugin</artifactId>
+                <version>9.3.0.M1</version>
+                <configuration>
+                    <scanIntervalSeconds>5</scanIntervalSeconds>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <version>1.8</version>
+                <executions>
+                    <execution>
+                        <id>parse-lift-major-minor-version</id>
+                        <goals>
+                            <goal>regex-property</goal>
+                        </goals>
+                        <configuration>
+                            <name>lift.majorMinorVersion</name>
+                            <value>3.0-M3</value>
+                            <regex>^([0-9]+)\.([0-9]+).*$</regex>
+                            <replacement>$1.$2</replacement>
+                            <failIfNoMatch>true</failIfNoMatch>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>parse-scala-major-minor-version</id>
+                        <goals>
+                            <goal>regex-property</goal>
+                        </goals>
+                        <configuration>
+                            <name>scala.majorMinorVersion</name>
+                            <value>3.0-M3</value>
+                            <regex>^([0-9]+)\.([0-9]+).*$</regex>
+                            <replacement>$1.$2</replacement>
+                            <failIfNoMatch>true</failIfNoMatch>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
 
         </plugins>
     </build>
@@ -96,7 +150,29 @@
             <artifactId>dispatch-core_2.10</artifactId>
             <version>0.11.2</version>
         </dependency>
-        
+        <!-- salat & casbah for mongodb management-->
+        <dependency>
+            <groupId>com.novus</groupId>
+            <artifactId>salat-util_2.11</artifactId>
+            <version>1.9.9</version>
+        </dependency>
+        <dependency>
+            <groupId>com.novus</groupId>
+            <artifactId>salat-core_2.11</artifactId>
+            <version>1.9.9</version>
+        </dependency>
+        <dependency>
+            <groupId>org.mongodb</groupId>
+            <artifactId>casbah-core_2.11</artifactId>
+            <version>2.8.0-RC1</version>
+        </dependency>
+        <!-- lift for webapp development -->
+        <dependency>
+            <groupId>net.liftweb</groupId>
+            <artifactId>lift-mapper_2.11</artifactId>
+            <version>3.0-M3</version>
+        </dependency>
+
         <!-- Bitcoinj -->
         <dependency>
             <groupId>org.bitcoinj</groupId>

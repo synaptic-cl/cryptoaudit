@@ -54,7 +54,7 @@ class SimpleMerkleTreeTest extends FunSuite{
     val seq = Array("a", "b", "c", "d")
     /*expected values were calculated manually using online SHA256 calculator*/
     val tree = new MerkleTree[SimpleMerkleNode](seq, SHA256Hash)
-    val expectedPath = Array("3e23e8160039594a33894f6564e1b1348bbd7a0088d42c4acb73eeaed59c009d",
+    val expectedPath = List("3e23e8160039594a33894f6564e1b1348bbd7a0088d42c4acb73eeaed59c009d",
                               "d3a0f1c792ccf7f1708d5422696263e35755a86917ea76ef9242bd4a8cf4891a")
     val expectedProof = new MerkleTreeProof(0, expectedPath)
     val actualProof = tree.computeProof("a").get

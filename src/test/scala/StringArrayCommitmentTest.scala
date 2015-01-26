@@ -1,6 +1,6 @@
 package test.scala
 
-import filecommitment.StringArrayCommitment
+import main.scala.filecommitment.StringArrayCommitment
 import main.scala.hash.SHA256Hash
 import main.scala.merkletree.MerkleTree
 import org.scalatest.FunSuite
@@ -11,8 +11,8 @@ import org.scalatest.FunSuite
 class StringArrayCommitmentTest extends FunSuite{
   test("Should return different commitments when invoked twice with same input"){
     val testInput = Array("a", "b", "c")
-    val firstCommitment = new StringArrayCommitment(testInput)
-    val secondCommitment = new StringArrayCommitment(testInput)
+    val firstCommitment : StringArrayCommitment = new StringArrayCommitment(testInput)
+    val secondCommitment : StringArrayCommitment = new StringArrayCommitment(testInput)
     assert(firstCommitment.commitment != secondCommitment.commitment)
   }
 

@@ -71,7 +71,7 @@ class MerkleTree[N <: MerkleNode](elements : IndexedSeq[String], hash : Hash)(im
       proof(currentLevel-1) = levels(currentLevel)(sibling).value
       currentLevel -= 1
     }
-    val path = proof.reverse
+    val path = proof.reverse.toList
     Some(new MerkleTreeProof(elmntIndex, path))
   }
 

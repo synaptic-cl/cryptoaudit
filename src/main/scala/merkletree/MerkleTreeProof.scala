@@ -3,7 +3,7 @@ package merkletree
 /**
  * Created by fquintanilla on 14-01-15.
  */
-class MerkleTreeProof(val position : Int, val path : Array[String]){
+case class MerkleTreeProof(val position : Int, val path : List[String]){
 
   override def equals(other : Any) : Boolean = {
     if (!other.isInstanceOf[MerkleTreeProof]){
@@ -11,6 +11,6 @@ class MerkleTreeProof(val position : Int, val path : Array[String]){
     }
     val that = other.asInstanceOf[MerkleTreeProof]
     that.position == this.position &&
-    that.path.deep == this.path.deep
+    that.path == this.path
   }
 }

@@ -1,6 +1,6 @@
-package filecommitment
+package main.scala.filecommitment
 
-import commitment.HashCommitment
+import main.scala.commitment.HashCommitmentFactory
 import main.scala.hash.SHA256Hash
 import main.scala.merkletree.{SimpleMerkleNode, MerkleTree}
 import merkletree.MerkleTreeProof
@@ -10,10 +10,12 @@ import merkletree.MerkleTreeProof
  */
 
 class StringArrayCommitment(val lines : Array[String]) {
-  val merkleTree = new MerkleTree[SimpleMerkleNode](lines, SHA256Hash)
+  private val merkleTree = new MerkleTree[SimpleMerkleNode](lines, SHA256Hash)
   val root = merkleTree.root
 
-  val (commitment,random) = HashCommitment.commit(root)
+  private val commitmentObject = HashCommitmentFactory.commit(root)
+  val commitment = commitmentObject.value
+  val random = commitmentObject.random
 
   def proofArray : Array[(String, MerkleTreeProof)] = {
     for (line <- lines) yield (line, merkleTree.computeProof(line).get)
