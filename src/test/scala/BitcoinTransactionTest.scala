@@ -2,31 +2,41 @@ package test.scala
 
 import java.math.BigInteger
 import org.bitcoinj.core.Sha256Hash
-import org.scalatest.FunSuite
+import org.scalatest.{BeforeAndAfter, FunSuite}
 import org.scalatest.mock.MockitoSugar
 import org.mockito.Mockito._
 
 import SecureBroadcastChannel.{BlockchainAPI, BitcoinTransactionException, BitcoinTransaction}
 
 
-class BitcoinTransactionTest extends FunSuite with MockitoSugar  {
+class BitcoinTransactionTest extends FunSuite with MockitoSugar with BeforeAndAfter  {
 
+  var transaction:BitcoinTransaction = _
 
-  test("Creating an OP_RETURN transaction from btc key, listunspent, message"){
-
-    val messageInput= "Hi everyone fkdshfkjhsdfhjlskdgfjhksdgfk"
+  
+  before {
+    
+    
+    // Preparing the mock object for Blockchain API
     val spendTxHash = new Sha256Hash("5aeabdff63d243ede0cf64001a9ae5396e12f02eeb78a6e5da2ff54ceb9d7a6b")  //Hash big indian (change order received from blockchain.info ??
     val outputIndex: Int = 0
     val spendableAmount:Int= 32700
     val unspentOutputs = (spendTxHash,outputIndex,spendableAmount)
     var blockchainAPIMock = mock[BlockchainAPI]
-    
-    when(blockchainAPIMock.getUnspentOutputs("14xfM46j1QR1H1ZEm4XQWjmgYXGcskPC3t")).thenReturn(unspentOutputs)
-    
-    val bitcoinPrivateKey = new BigInteger("111048528963322230780084975007062377427337875279347986832075827558776062265379")
-    val transaction = new BitcoinTransaction(bitcoinPrivateKey)
 
+    when(blockchainAPIMock.getUnspentOutputs("14xfM46j1QR1H1ZEm4XQWjmgYXGcskPC3t")).thenReturn(unspentOutputs)
+
+    //Constructing the transaction that includes a mock object as one of its members
+    val bitcoinPrivateKey = new BigInteger("111048528963322230780084975007062377427337875279347986832075827558776062265379")
+    transaction = new BitcoinTransaction(bitcoinPrivateKey)
     transaction.blockchainAPI = blockchainAPIMock
+
+  }
+  
+  
+  test("Creating an OP_RETURN transaction from btc key, listunspent, message"){
+
+    val messageInput= "Hi everyone fkdshfkjhsdfhjlskdgfjhksdgfk"
     
     val transactionHex = transaction.compute(messageInput)
 
@@ -39,7 +49,6 @@ class BitcoinTransactionTest extends FunSuite with MockitoSugar  {
     
     val messageInput= "This message is more than 40 bytes long......................................"
     val bitcoinPrivateKey = new BigInteger("111048528963322230780084975007062377427337875279347986832075827558776062265379")
-    val transaction = new BitcoinTransaction(bitcoinPrivateKey)
     
     intercept[BitcoinTransactionException] {
       val hexString = transaction.compute(messageInput)
