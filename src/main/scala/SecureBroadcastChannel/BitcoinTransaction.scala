@@ -15,7 +15,7 @@ class BitcoinTransaction(val aPrivateKey:BigInteger) {
   val networkParams = MainNetParams.get()
   val AMOUNT_MINER_FEE: Int = 10000
   val EXPECTED_LENGHT_FOR_OP_RETURN_MESSAGES: Int = 40
-  var blockchainAPI = new BlockchainAPI()
+  var blockchainAPI:BlockchainAPI = new BlockchainAPIRest()
 
   def createKey(): ECKey = {
 
