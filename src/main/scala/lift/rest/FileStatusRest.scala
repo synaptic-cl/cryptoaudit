@@ -1,7 +1,6 @@
 package main.scala.lift.rest
 
-import main.scala.lift.rest.FileUploadRest.TestResponse
-import net.liftweb.common.{Empty, Full, Failure, Box}
+import net.liftweb.common.{Box, Empty, Full}
 import net.liftweb.http.rest.RestHelper
 import net.liftweb.json.Extraction
 
@@ -27,7 +26,7 @@ object FileStatusRest extends RestHelper{
    * returns a Box with an object representing the status or Empty if
    * the fileId matched no file in the system
    * */
-  def getStatus(in : String) : Box[Status] = {
+  private def getStatus(in : String) : Box[Status] = {
 
     if (in.compareTo("10") < 0)
       return Full(new Status(in))

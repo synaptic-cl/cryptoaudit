@@ -1,16 +1,16 @@
 package main.scala.lift.rest
 
+import net.liftweb.common.{Box, Full}
 import net.liftweb.http.S
 import net.liftweb.http.rest.RestHelper
 import net.liftweb.json._
-import net.liftweb.json.JsonParser._
 
 /**
  * Created by fquintanilla on 26-01-15.
  */
 object FileUploadRest extends RestHelper{
 
-  case class TestResponse(val si : String)
+  case class FileUploadResponse(val url : String)
   /**
    * Serve the specified URL
    *
@@ -21,8 +21,13 @@ object FileUploadRest extends RestHelper{
     // /api/file/
     case "api" :: "file" :: Nil Post _ =>
       for {
-        fileContent : String <- S.param("file") ?~ "Param 'file' missing"
-      }yield Extraction.decompose(new TestResponse(fileContent))
+        content  <- S.param("file") ?~ "Param 'file' missing"
+        response <- processFile(content) ?~ "The file couldn't be processed"
+      }yield Extraction.decompose(response)
+  }
+
+  private def processFile(file : String) : Box[FileUploadResponse] = {
+    Full(FileUploadResponse("a"))
   }
 
 }
