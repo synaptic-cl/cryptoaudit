@@ -1,3 +1,5 @@
+package test.scala
+
 import main.scala.commitment.Commitment
 import main.scala.persistance.{CommittedLine, CommitmentDAO, CommittedLineDAO}
 import merkletree.MerkleTreeProof
