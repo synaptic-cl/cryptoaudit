@@ -11,6 +11,7 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="scala-sdk-2.11.4" level="application" />
+    <orderEntry type="library" name="Maven: org.mockito:mockito-all:1.9.5" level="project" />
     <orderEntry type="library" name="Maven: bouncycastle:bcprov-jdk16:140" level="project" />
     <orderEntry type="library" name="Maven: org.scalatest:scalatest_2.11:2.2.3" level="project" />
     <orderEntry type="library" name="Maven: org.scala-lang:scala-library:2.11.2" level="project" />

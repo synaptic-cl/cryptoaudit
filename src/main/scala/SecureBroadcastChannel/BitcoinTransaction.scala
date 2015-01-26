@@ -20,8 +20,7 @@ class BitcoinTransaction(val aPrivateKey:BigInteger) {
   def createKey(): ECKey = {
 
     val key:ECKey = ECKey.fromPrivate(this.privateKey)
-    println(key.toAddress(networkParams))
-
+    
     return key
 
   }
