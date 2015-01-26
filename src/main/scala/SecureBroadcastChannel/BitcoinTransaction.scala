@@ -9,39 +9,29 @@ import org.bitcoinj.script.{ScriptOpCodes, ScriptBuilder}
 
 class BitcoinTransactionException(smth:String)  extends Exception
 
-class BitcoinTransaction(val aMessage:String, val aPrivateKey:BigInteger) {
-  
-  var message:String = aMessage
+class BitcoinTransaction(val aPrivateKey:BigInteger) {
+
   var privateKey:BigInteger = aPrivateKey
   val networkParams = MainNetParams.get()
   val AMOUNT_MINER_FEE: Int = 10000
   val EXPECTED_LENGHT_FOR_OP_RETURN_MESSAGES: Int = 40
-
+  var blockchainAPI = new BlockchainAPI()
 
   def createKey(): ECKey = {
 
     val key:ECKey = ECKey.fromPrivate(this.privateKey)
+    println(key.toAddress(networkParams))
 
     return key
 
   }
+
   
-  def getUnspentOutputs():(Sha256Hash,Long,Int) = {
-    
-    val spendTxHash = new Sha256Hash("5aeabdff63d243ede0cf64001a9ae5396e12f02eeb78a6e5da2ff54ceb9d7a6b")  //Hash big indian (change order received from blockchain.info ??
-    val outputIndex: Long = 0
-    val spendableAmount:Int= 3270000
-    
-    return (spendTxHash,outputIndex,spendableAmount)
-    
-  }
-  
-  
-  def compute():String = {
+  def compute(aMessage:String):String = {
 
     val tx = new Transaction(this.networkParams)
 
-    val dataToSend = this.message.getBytes()
+    val dataToSend = aMessage.getBytes()
     if (dataToSend.length != EXPECTED_LENGHT_FOR_OP_RETURN_MESSAGES)
       throw new BitcoinTransactionException("The length of message to be published with OP_RETURN must be equal to " + EXPECTED_LENGHT_FOR_OP_RETURN_MESSAGES.toString())
 
@@ -52,7 +42,7 @@ class BitcoinTransaction(val aMessage:String, val aPrivateKey:BigInteger) {
 
     val script = ScriptBuilder.createOutputScript(address)
 
-    val (spendTxHash,outputIndex,spendableAmount) = this.getUnspentOutputs()
+    val (spendTxHash,outputIndex,spendableAmount) = this.blockchainAPI.getUnspentOutputs(stringAddress)
 
     //Create the input
     val prevOut = new TransactionOutPoint(networkParams,outputIndex,spendTxHash)
