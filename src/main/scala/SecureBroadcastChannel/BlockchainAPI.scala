@@ -2,10 +2,15 @@ package SecureBroadcastChannel
 
 import org.bitcoinj.core.Sha256Hash
 
-/**
- * Created by philippe on 23-01-15.
- */
-class BlockchainAPI {
+
+trait BlockchainAPI {
+
+  def getUnspentOutputs(address:String):(Sha256Hash,Int,Int)
+
+}
+
+
+class BlockchainAPIRest extends BlockchainAPI{
 
   def getUnspentOutputs(address:String):(Sha256Hash,Int,Int) = {
 

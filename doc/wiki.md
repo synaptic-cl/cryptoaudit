@@ -13,6 +13,10 @@ Installation
 `sudo apt-get install maven`
 
 
+* Mongo
+ * Install http://docs.mongodb.org/manual/tutorial/install-mongodb-on-ubuntu/
+ * Run: `sudo mongod`
+
 
 Git 
 ---
@@ -21,7 +25,9 @@ Git
 * [Merge changes of main repository] (http://stackoverflow.com/questions/867831/merge-changes-from-remote-github-repository-to-your-local-repository)
 
 `git remote add synaptic-cryptoaudit https://github.com/synaptic-cl/cryptoaudit.git`  
+
 `git pull synaptic-cryptoaudit <branch name>`
+
 `git push`  
 
 
