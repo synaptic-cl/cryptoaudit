@@ -30,3 +30,4 @@
 
 * [Scala + Maven](http://www.scala-lang.org/old/node/345)
 * [Mixed Scala and Java in Maven project](http://xflin.blogspot.com.es/2013/08/mixed-scala-and-java-in-maven-project.html)
+* [How to use mock objects with Scala Test](http://alvinalexander.com/scala/how-to-use-mock-objects-with-scalatest)
