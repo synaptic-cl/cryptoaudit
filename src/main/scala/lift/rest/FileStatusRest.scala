@@ -17,7 +17,7 @@ object FileStatusRest extends RestHelper{
   serve {
     case "api" :: "file" :: "status" :: fileId :: Nil Get _ =>
       for {
-        resp <- getStatus(fileId) ?~ "The status couldn't be retrieved for ther given id"
+        resp <- getStatus(fileId) ?~ "The status couldn't be retrieved for the given id"
       } yield Extraction.decompose(resp)
   }
 
