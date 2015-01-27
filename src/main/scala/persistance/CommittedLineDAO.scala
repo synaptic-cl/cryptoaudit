@@ -2,13 +2,12 @@ package main.scala.persistance
 
 import com.mongodb.casbah.commons.MongoDBObject
 import com.novus.salat.dao.{SalatMongoCursor, SalatDAO}
-import main.scala.commitment.Commitment
 import org.bson.types.ObjectId
 import com.novus.salat.global._
 
 /**
- * Created by fquintanilla on 19-01-15.
- */
+* Created by fquintanilla on 19-01-15.
+*/
 object CommittedLineDAO extends SalatDAO[CommittedLine, ObjectId](collection = MongoFactory.mongoDB("CommittedLine")){
 
   override def insert(toPersist : CommittedLine) : Option[ObjectId] = {
@@ -26,10 +25,10 @@ object CommittedLineDAO extends SalatDAO[CommittedLine, ObjectId](collection = M
   private def validate(toPersist : CommittedLine) : Boolean = {
 
     /* A valid CommittedLine should have no empty fields and
-    * reference a valid commitment from the database */
-    val commitmentId = toPersist.commitment
-    val commitment = CommitmentDAO.findOneById(commitmentId)
-    if (commitment.getOrElse("") == "") return false
+    * reference a valid transaction from the database */
+    val transactionId = toPersist.transaction
+    val transaction = TransactionDAO.findOneById(transactionId)
+    if (transaction == None) return false
     true
   }
 
@@ -37,24 +36,24 @@ object CommittedLineDAO extends SalatDAO[CommittedLine, ObjectId](collection = M
     this.find(MongoDBObject("line" -> line))
   }
 
-  def findByCommitmentId(id : ObjectId) : SalatMongoCursor[CommittedLine] = {
-    this.find(MongoDBObject("commitment" -> id))
+  def findByTransactionId(id : ObjectId) : SalatMongoCursor[CommittedLine] = {
+    this.find(MongoDBObject("transaction" -> id))
   }
 
-  def findByCommitment(comm : Commitment) : SalatMongoCursor[CommittedLine] = {
-    val commId = comm._id
-    this.findByCommitmentId(commId)
+  def findByTransaction(trans : Transaction) : SalatMongoCursor[CommittedLine] = {
+    val commId = trans._id
+    this.findByTransactionId(commId)
   }
 
-  def findCommitmentFromLine(line : CommittedLine) : Option[Commitment] = {
-    val commId = line.commitment
-    CommitmentDAO.findOneById(commId)
+  def findTransactionFromLine(line : CommittedLine) : Option[Transaction] = {
+    val transactionId = line.transaction
+    TransactionDAO.findOneById(transactionId)
   }
 
-  def findCommitmentFromLineId(lineId : ObjectId) : Option[Commitment] = {
+  def findTransactionFromLineId(lineId : ObjectId) : Option[Transaction] = {
     val line = this.findOneById(lineId)
     if (line == None) return None
-    this.findCommitmentFromLine(line.get)
+    this.findTransactionFromLine(line.get)
   }
 
 
