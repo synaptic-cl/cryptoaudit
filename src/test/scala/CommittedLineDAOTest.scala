@@ -1,34 +1,34 @@
 package test.scala
 
 import main.scala.commitment.Commitment
-import main.scala.persistance.{CommittedLine, CommitmentDAO, CommittedLineDAO}
+import main.scala.persistance.{CommittedLine, TransactionDAO, CommittedLineDAO, Transaction}
 import merkletree.MerkleTreeProof
 import org.bson.types.ObjectId
 import org.scalatest.{BeforeAndAfter, FunSuite}
 
 /**
- * Created by fquintanilla on 19-01-15.
- */
+* Created by fquintanilla on 19-01-15.
+*/
 class CommittedLineDAOTest extends FunSuite with BeforeAndAfter{
-  var testCommitment : Commitment = _
-  var testCommitmentId :ObjectId = _
-  var testProof : MerkleTreeProof = _
-  var testLineId : ObjectId = _
+  val testCommitment : Commitment = new Commitment("test", "test")
+  val testProof : MerkleTreeProof = new MerkleTreeProof(0, List("1", "2"))
+  var testTransaction: Transaction = _
+  var testTransactionId :ObjectId = _
   var testLine : CommittedLine = _
+  var testLineId : ObjectId = _
 
   before{
     CommittedLineDAO.collection.drop()
-    CommitmentDAO.collection.drop()
-    testCommitment = new Commitment("test", "test")
-    testCommitmentId = CommitmentDAO.insert(testCommitment).get
-    testProof = new MerkleTreeProof(0, List("1", "2"))
-    testLine = new CommittedLine("test", testProof, testCommitmentId)
+    TransactionDAO.collection.drop()
+    testTransaction = new Transaction("test", testCommitment)
+    testTransactionId = TransactionDAO.insert(testTransaction).get
+    testLine = new CommittedLine("test", testProof, testTransactionId)
     testLineId = CommittedLineDAO.insert(testLine).get
   }
 
   test("CommittedLineDAO should be able to insert a valid committedLine and find it in the database"){
     val testProof = new MerkleTreeProof(0, List("1", "2"))
-    val testCommittedLine = new CommittedLine("a", testProof, testCommitmentId)
+    val testCommittedLine = new CommittedLine("a", testProof, testTransactionId)
     val id = CommittedLineDAO.insert(testCommittedLine)
     assert(id != None)
     val commLineFromDB = CommittedLineDAO.findOneById(id.get)
@@ -48,44 +48,44 @@ class CommittedLineDAOTest extends FunSuite with BeforeAndAfter{
     val line = result.toList.head
     assert (line == testLine)
   }
-  test("Method findByCommitmentId should return all committedLines with the specified commitmentId"){
-    val secondLine = new CommittedLine("test2", testProof, testCommitmentId)
+  test("Method findByTransactionId should return all committedLines with the specified commitmentId"){
+    val secondLine = new CommittedLine("test2", testProof, testTransactionId)
     assert(CommittedLineDAO.insert(secondLine).get != None)
     val posibleLines = List(testLine, secondLine)
-    val result = CommittedLineDAO.findByCommitmentId(testCommitmentId)
+    val result = CommittedLineDAO.findByTransactionId(testTransactionId)
     assert(result.count == 2)
     for (commLine <- result){
       assert(posibleLines.contains(commLine))
     }
   }
-  test("Method findByCommitment should return all committedLines with the id of the specified commitment"){
-    val secondLine = new CommittedLine("test2", testProof, testCommitmentId)
+  test("Method findByTransaction should return all committedLines with the id of the specified commitment"){
+    val secondLine = new CommittedLine("test2", testProof, testTransactionId)
     assert(CommittedLineDAO.insert(secondLine).get != None)
     val posibleLines = List(testLine, secondLine)
-    val result = CommittedLineDAO.findByCommitment(testCommitment)
+    val result = CommittedLineDAO.findByTransaction(testTransaction)
     assert(result.count == 2)
     for (commLine <- result){
       assert(posibleLines.contains(commLine))
     }
   }
-  test("Method findCommitmentFromLine should return the commitment the specified line references"){
-    val result = CommittedLineDAO.findCommitmentFromLine(testLine)
+  test("Method findTransactionFromLine should return the transaction the specified line references"){
+    val result = CommittedLineDAO.findTransactionFromLine(testLine)
     assert(result != None)
-    assert(result.get == testCommitment)
+    assert(result.get == testTransaction)
   }
-  test("Method findCommitmentFromLineId should return the commitment the specified line id references"){
-    val result = CommittedLineDAO.findCommitmentFromLineId(testLineId)
+  test("Method findTransactionFromLineId should return the commitment the specified line id references"){
+    val result = CommittedLineDAO.findTransactionFromLineId(testLineId)
     assert(result != None)
-    assert(result.get == testCommitment)
+    assert(result.get == testTransaction)
   }
-  test("Method findCommitmentFromLine should return None when it can't find the commitment"){
+  test("Method findTransactionFromLine should return None when it can't find the commitment"){
     val secondLine = new CommittedLine("test2", testProof, new ObjectId())
-    val result = CommittedLineDAO.findCommitmentFromLine(secondLine)
+    val result = CommittedLineDAO.findTransactionFromLine(secondLine)
     assert(result == None)
   }
-  test("Method findCommitmentFromLineId should return None when it can't find the commitment"){
+  test("Method findTransactionFromLineId should return None when it can't find the commitment"){
     val secondLineId = new ObjectId()
-    val result = CommittedLineDAO.findCommitmentFromLineId(secondLineId)
+    val result = CommittedLineDAO.findTransactionFromLineId(secondLineId)
     assert(result == None)
   }
 
