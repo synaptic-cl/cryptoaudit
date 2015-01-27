@@ -16,19 +16,28 @@ class BitcoinTransaction(val aPrivateKey:BigInteger) {
   val AMOUNT_MINER_FEE: Int = 10000
   val EXPECTED_LENGHT_FOR_OP_RETURN_MESSAGES: Int = 40
   var blockchainAPI:BlockchainAPI = new BlockchainAPIRest()
+  var tx:Transaction = _;
 
   def createKey(): ECKey = {
 
     val key:ECKey = ECKey.fromPrivate(this.privateKey)
+    println(key.getPrivateKeyEncoded(networkParams))
 
     return key
 
   }
 
+  def getTransactionHash():String = {
+    
+    val tx_hash = this.tx.getHashAsString
+    
+    return tx_hash
+    
+  }
   
   def compute(aMessage:String):String = {
 
-    val tx = new Transaction(this.networkParams)
+    this.tx = new Transaction(this.networkParams)
 
     val dataToSend = aMessage.getBytes()
     if (dataToSend.length != EXPECTED_LENGHT_FOR_OP_RETURN_MESSAGES)

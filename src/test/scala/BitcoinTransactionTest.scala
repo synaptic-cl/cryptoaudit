@@ -15,10 +15,10 @@ class BitcoinTransactionTest extends FunSuite with MockitoSugar with BeforeAndAf
 
   
   before {
-    
-    
+
     // Preparing the mock object for Blockchain API
     val spendTxHash = new Sha256Hash("5aeabdff63d243ede0cf64001a9ae5396e12f02eeb78a6e5da2ff54ceb9d7a6b")  //Hash big indian (change order received from blockchain.info ??
+
     val outputIndex: Int = 0
     val spendableAmount:Int= 32700
     val unspentOutputs = (spendTxHash,outputIndex,spendableAmount)
