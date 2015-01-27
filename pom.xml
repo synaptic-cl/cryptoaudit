@@ -150,6 +150,13 @@
             <artifactId>scalamock-scalatest-support_2.11</artifactId>
             <version>3.2.1</version>
         </dependency>
+        
+        <!-- Testing library Mockito -->
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-all</artifactId>
+            <version>1.9.5</version>
+        </dependency>
 
         <!-- http connection library dispatch -->
         <dependency>
@@ -157,6 +164,14 @@
             <artifactId>dispatch-core_2.10</artifactId>
             <version>0.11.2</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.scalaj</groupId>
+            <artifactId>scalaj-http_2.11</artifactId>
+            <version>1.1.0</version>
+        </dependency>
+
+
         <!-- salat & casbah for mongodb management-->
         <dependency>
             <groupId>com.novus</groupId>
@@ -178,6 +193,14 @@
             <groupId>net.liftweb</groupId>
             <artifactId>lift-mapper_2.11</artifactId>
             <version>3.0-M3</version>
+        </dependency>
+
+
+        <!-- JSon parser -->
+        <dependency>
+            <groupId>com.propensive</groupId>
+            <artifactId>rapture-json-play_2.10</artifactId>
+            <version>1.1.0</version>
         </dependency>
 
         <!-- Bitcoinj -->
