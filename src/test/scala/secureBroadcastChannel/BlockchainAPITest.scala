@@ -1,4 +1,4 @@
-package test.scala
+package test.scala.secureBroadcastChannel
 
 import SecureBroadcastChannel.BlockchainAPIRest
 import org.bitcoinj.core.Sha256Hash

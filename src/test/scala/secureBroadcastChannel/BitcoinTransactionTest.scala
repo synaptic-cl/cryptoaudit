@@ -1,12 +1,12 @@
-package test.scala
+package test.scala.secureBroadcastChannel
 
 import java.math.BigInteger
-import org.bitcoinj.core.Sha256Hash
-import org.scalatest.{BeforeAndAfter, FunSuite}
-import org.scalatest.mock.MockitoSugar
-import org.mockito.Mockito._
 
-import SecureBroadcastChannel.{BlockchainAPI, BitcoinTransactionException, BitcoinTransaction}
+import SecureBroadcastChannel.{BitcoinTransaction, BitcoinTransactionException, BlockchainAPI}
+import org.bitcoinj.core.Sha256Hash
+import org.mockito.Mockito._
+import org.scalatest.mock.MockitoSugar
+import org.scalatest.{BeforeAndAfter, FunSuite}
 
 
 class BitcoinTransactionTest extends FunSuite with MockitoSugar with BeforeAndAfter  {

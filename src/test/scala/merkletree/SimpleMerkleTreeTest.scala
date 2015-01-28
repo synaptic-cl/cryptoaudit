@@ -1,7 +1,7 @@
-package test.scala
+package test.scala.merkletree
 
 import main.scala.hash.SHA256Hash
-import main.scala.merkletree.{SimpleMerkleNode, MerkleTree}
+import main.scala.merkletree.{MerkleTree, SimpleMerkleNode}
 import merkletree.MerkleTreeProof
 import org.scalatest.FunSuite
 
