@@ -1,7 +1,7 @@
 package test.scala
 
 import main.scala.commitment.Commitment
-import main.scala.persistance.{TransactionDAO, Transaction}
+import main.scala.persistance.transaction.{TransactionDAO, Transaction}
 import org.scalatest.{BeforeAndAfter, FunSuite}
 
 /**

@@ -5,7 +5,9 @@ import java.math.BigInteger
 import main.scala.SecureBroadcastChannel.BlockchainPublisher
 import main.scala.commitment.Commitment
 import main.scala.filecommitment.StringArrayCommitment
-import main.scala.persistance.{CommittedLineDAO, CommittedLine, TransactionDAO, Transaction}
+import main.scala.persistance.committedLine.{CommittedLineDAO, CommittedLine}
+import main.scala.persistance.transaction.{TransactionDAO, Transaction}
+import main.scala.persistance.committedLine.CommittedLineDAO
 import net.liftweb.common.{Empty, Box, Full}
 import net.liftweb.http.{S,Req}
 import net.liftweb.http.rest.RestHelper

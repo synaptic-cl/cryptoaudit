@@ -1,4 +1,4 @@
-package main.scala.persistance
+package main.scala.persistance.committedLine
 
 import merkletree.MerkleTreeProof
 import org.bson.types.ObjectId

@@ -1,7 +1,7 @@
 package main.scala.lift.rest
 
 import main.scala.commitment.Commitment
-import main.scala.persistance.TransactionDAO
+import main.scala.persistance.transaction.TransactionDAO
 import net.liftweb.common.{Box, Empty, Full}
 import net.liftweb.http.rest.RestHelper
 import net.liftweb.json.Extraction

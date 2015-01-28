@@ -1,7 +1,9 @@
 package test.scala
 
 import main.scala.commitment.Commitment
-import main.scala.persistance.{CommittedLine, TransactionDAO, CommittedLineDAO, Transaction}
+import main.scala.persistance.committedLine.{CommittedLineDAO, CommittedLine}
+import main.scala.persistance.transaction.{TransactionDAO, Transaction}
+import main.scala.persistance.committedLine.CommittedLineDAO
 import merkletree.MerkleTreeProof
 import org.bson.types.ObjectId
 import org.scalatest.{BeforeAndAfter, FunSuite}

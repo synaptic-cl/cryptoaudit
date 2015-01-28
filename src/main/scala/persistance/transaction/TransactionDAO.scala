@@ -1,8 +1,9 @@
-package main.scala.persistance
+package main.scala.persistance.transaction
 
 import com.mongodb.casbah.commons.MongoDBObject
 import com.novus.salat.dao.SalatDAO
 import com.novus.salat.global._
+import main.scala.persistance.MongoFactory
 import org.bson.types.ObjectId
 
 /**

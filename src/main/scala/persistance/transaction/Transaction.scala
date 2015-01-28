@@ -1,4 +1,4 @@
-package main.scala.persistance
+package main.scala.persistance.transaction
 
 import com.novus.salat.annotations.raw.Key
 import main.scala.commitment.Commitment
