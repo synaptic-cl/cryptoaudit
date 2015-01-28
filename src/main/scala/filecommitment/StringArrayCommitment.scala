@@ -10,11 +10,14 @@ import merkletree.MerkleTreeProof
  */
 
 class StringArrayCommitment(val lines : Array[String]) {
+  private val EXPECTED_LENGHT_FOR_OP_RETURN_MESSAGES: Int = 40
+
+
   private val merkleTree = new MerkleTree[SimpleMerkleNode](lines, SHA256Hash)
   val root = merkleTree.root
 
   private val commitmentObject = HashCommitmentFactory.commit(root)
-  val commitment = commitmentObject.value
+    val commitment = commitmentObject.value.substring(0,EXPECTED_LENGHT_FOR_OP_RETURN_MESSAGES)
   val random = commitmentObject.random
 
   def proofArray : Array[(String, MerkleTreeProof)] = {

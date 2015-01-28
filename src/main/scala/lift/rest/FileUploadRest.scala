@@ -14,6 +14,7 @@ import net.liftweb.common.{Empty, Box, Full}
 import net.liftweb.http.{FileParamHolder, S, Req}
 import net.liftweb.http.rest.RestHelper
 import net.liftweb.json._
+import net.liftweb.util.Props
 
 import scala.io.Source
 
@@ -23,13 +24,16 @@ import scala.io.Source
 object FileUploadRest extends RestHelper{
 
   case class FileUploadResponse(val file_id : String)
+
+  val propPrivateKey : String = Props.get("bitcoin.privateKey").openOrThrowException("Private key not found in properties")
+
   /**
    * Serve the specified URL
    *
    * e.g. case "hello" :: "world" :: Nil Get _ => ...
    * will respond to a GET request on the http://<host>/hello/world/ URL
    * */
-  serve{
+   serve{
     // /api/file/
     case "api" :: "file" :: Nil Post req =>
       for {
@@ -52,12 +56,10 @@ object FileUploadRest extends RestHelper{
     val lines = content.split("\n")
     val comm : StringArrayCommitment = new StringArrayCommitment(lines)
     // TODO: Calcular BitcoinTransaction
-    /* replace '1' for the private key from configuration
-    val pKey : BigInteger = new BigInteger("1")
+    val pKey : BigInteger = new BigInteger(propPrivateKey)
     val publisher = new BlockchainPublisher(pKey, comm.commitment)
     val tx_hash = publisher.publish()
-    */
-    val tx_hash = comm.commitment
+//    val tx_hash = comm.commitment
     val commitment = new Commitment(comm.root, comm.random)
     val tx = new Transaction(tx_hash, commitment)
     val txId = TransactionDAO.insert(tx)
