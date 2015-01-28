@@ -1,4 +1,4 @@
-package test.scala
+package test.scala.hash
 
 import main.scala.hash.SHA256Hash._
 import org.scalatest.FunSuite

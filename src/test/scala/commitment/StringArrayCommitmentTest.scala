@@ -1,4 +1,4 @@
-package test.scala
+package test.scala.commitment
 
 import main.scala.filecommitment.StringArrayCommitment
 import main.scala.hash.SHA256Hash

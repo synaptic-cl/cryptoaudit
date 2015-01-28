@@ -1,9 +1,11 @@
-package main.scala.persistance
+package main.scala.persistance.committedLine
 
 import com.mongodb.casbah.commons.MongoDBObject
-import com.novus.salat.dao.{SalatMongoCursor, SalatDAO}
-import org.bson.types.ObjectId
+import com.novus.salat.dao.{SalatDAO, SalatMongoCursor}
 import com.novus.salat.global._
+import main.scala.persistance.MongoFactory
+import main.scala.persistance.transaction.{Transaction, TransactionDAO}
+import org.bson.types.ObjectId
 
 /**
 * Created by fquintanilla on 19-01-15.
