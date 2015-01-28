@@ -29,9 +29,10 @@ object FileStatusRest extends RestHelper{
    * returns a Box with an object representing the status or Empty if
    * the fileId matched no file in the system
    * */
-  private def getStatus(in : String) : Box[StatusResponse] = {
-    if (!ObjectId.isValid(in)) return Empty
-    val id = new ObjectId(in)
+  private def getStatus(fileId : String) : Box[StatusResponse] = {
+    //if fileId is not a valid ObjectId the constructor will throw an exception
+    if (!ObjectId.isValid(fileId)) return Empty
+    val id = new ObjectId(fileId)
     val tx = TransactionDAO.findOneById(id)
     if (tx == None) return Empty
     Full(new StatusResponse(tx.get.transaction, tx.get.commitment))
