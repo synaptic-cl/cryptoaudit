@@ -1,6 +1,7 @@
 package main.scala.lift.rest
 
 import main.scala.commitment.Commitment
+import main.scala.persistance.file.FileDAO
 import main.scala.persistance.transaction.TransactionDAO
 import net.liftweb.common.{Box, Empty, Full}
 import net.liftweb.http.rest.RestHelper
@@ -15,7 +16,7 @@ object FileStatusRest extends RestHelper{
   /**
    * case class to represent the status of a file in the system
    * */
-  case class StatusResponse(val tx_id:String, val commitment:Commitment)
+  case class StatusResponse(val tx_id:String, val status: String, val filename:String)
 
   serve {
     case "api" :: "file" :: "status" :: fileId :: Nil Get _ =>
@@ -33,9 +34,10 @@ object FileStatusRest extends RestHelper{
     //if fileId is not a valid ObjectId the constructor will throw an exception
     if (!ObjectId.isValid(fileId)) return Empty
     val id = new ObjectId(fileId)
-    val tx = TransactionDAO.findOneById(id)
-    if (tx == None) return Empty
-    Full(new StatusResponse(tx.get.transaction, tx.get.commitment))
+    val file = FileDAO.findOneById(id)
+    if (file == None) return Empty
+    val txId = if (file.get.tx_id == None) "" else file.get.tx_id.get.toString
+    Full(new StatusResponse(txId, "pending", file.get.filename))
   }
 
 

@@ -1,15 +1,17 @@
 package main.scala.lift.rest
 
+import java.io.InputStream
 import java.math.BigInteger
 
 import main.scala.SecureBroadcastChannel.BlockchainPublisher
 import main.scala.commitment.Commitment
 import main.scala.filecommitment.StringArrayCommitment
 import main.scala.persistance.committedLine.{CommittedLineDAO, CommittedLine}
+import main.scala.persistance.file.{FileDAO, File}
 import main.scala.persistance.transaction.{TransactionDAO, Transaction}
 import main.scala.persistance.committedLine.CommittedLineDAO
 import net.liftweb.common.{Empty, Box, Full}
-import net.liftweb.http.{S,Req}
+import net.liftweb.http.{FileParamHolder, S, Req}
 import net.liftweb.http.rest.RestHelper
 import net.liftweb.json._
 
@@ -20,7 +22,7 @@ import scala.io.Source
  */
 object FileUploadRest extends RestHelper{
 
-  case class FileUploadResponse(val tx_id : String)
+  case class FileUploadResponse(val file_id : String)
   /**
    * Serve the specified URL
    *
@@ -31,21 +33,23 @@ object FileUploadRest extends RestHelper{
     // /api/file/
     case "api" :: "file" :: Nil Post req =>
       for {
-        content  <- getUploadedFileAsString(req) ?~ "You forgot to upload a file"
+        content  <- getUploadedFile(req) ?~ "You forgot to upload a file"
         response <- processFile(content) ?~ "The file couldn't be processed"
       }yield Extraction.decompose(response)
   }
 
-  private def getUploadedFileAsString(req : Req) : Box[String] = {
+  private def getUploadedFile(req : Req) : Box[FileParamHolder] = {
+    req.uploadedFiles(0)
     val files = req.uploadedFiles
     if (files.length == 0) return Empty
-    val fileStream = files(0).fileStream
-    val content : String = Source.fromInputStream(fileStream).mkString
-    Full(content)
+    Full(files(0))
   }
 
-  private def processFile(file : String) : Box[FileUploadResponse] = {
-    val lines = file.split("\n")
+  private def processFile(fph : FileParamHolder) : Box[FileUploadResponse] = {
+    val fileStream : InputStream = fph.fileStream
+    val filename : String = fph.fileName
+    val content : String = Source.fromInputStream(fileStream).mkString
+    val lines = content.split("\n")
     val comm : StringArrayCommitment = new StringArrayCommitment(lines)
     // TODO: Calcular BitcoinTransaction
     /* replace '1' for the private key from configuration
@@ -64,8 +68,10 @@ object FileUploadRest extends RestHelper{
       CommittedLineDAO.insert(commLine)
     }
 
-    //    Full(FileUploadResponse(lines.length.toString))
-    Full(FileUploadResponse(txId.get.toString))
+    val file : File = new File(txId, filename)
+    val fileId = FileDAO.insert(file)
+    if (fileId == None) return Empty
+    Full(FileUploadResponse(fileId.get.toString))
   }
 
 }
