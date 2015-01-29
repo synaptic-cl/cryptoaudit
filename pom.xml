@@ -13,7 +13,7 @@
         <sourceDirectory>${basedir}/src/</sourceDirectory>
         <resources>
             <resource>
-                <directory>${basedir}/conf</directory>
+                <directory>${basedir}/src/main/resources</directory>
             </resource>
             <resource>
                 <directory>${basedir}/public</directory>
