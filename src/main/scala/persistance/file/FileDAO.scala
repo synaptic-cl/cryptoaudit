@@ -23,4 +23,9 @@ object FileDAO extends SalatDAO[File, ObjectId](collection = MongoFactory.mongoD
     }
     true
   }
+
+  def getTransaction(file : File) : Option[Transaction] = {
+    if (file.tx_id == None) return None
+    TransactionDAO.findOneById(file.tx_id.get)
+  }
 }

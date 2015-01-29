@@ -36,8 +36,9 @@ object FileStatusRest extends RestHelper{
     val id = new ObjectId(fileId)
     val file = FileDAO.findOneById(id)
     if (file == None) return Empty
-    val txId = if (file.get.tx_id == None) "" else file.get.tx_id.get.toString
-    Full(new StatusResponse(txId, "pending", file.get.filename))
+    val tx = FileDAO.getTransaction(file.get)
+    val tx_hash = if (tx == None) "" else tx.get.transaction
+    Full(new StatusResponse(tx_hash, "pending", file.get.filename))
   }
 
 
