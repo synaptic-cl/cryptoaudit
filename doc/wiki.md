@@ -65,7 +65,7 @@ We use [IntelliJ IDEA 14 by Jetbrains](https://www.jetbrains.com/idea/download/)
  
 * Interesting tool to test HTTP requests in the browser:
  * http://www.getpostman.com/
- * The http queries can be uploaded from this file [publish.postman_dump](https://github.com/synaptic-cl/cryptoaudit/src/test/lift/publish.postman_dump)
+ * The http queries can be uploaded from this file [publish.postman_dump](https://github.com/synaptic-cl/cryptoaudit/blob/dev/src/test/lift/publish.postman_dump)
 
 
 
