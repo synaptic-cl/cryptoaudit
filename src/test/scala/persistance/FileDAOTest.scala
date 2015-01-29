@@ -61,4 +61,19 @@ class FileDAOTest extends FunSuite with BeforeAndAfter {
     assert(fileFromBD.get.tx_id == None)
   }
 
+  test("The getTransaction method should return the corresponding Transaction object if tx_id is set"){
+    var testFile = new File(Some(testTransaction._id), testFilename)
+    val id = FileDAO.insert(testFile)
+    assert(id != None)
+    val tx = FileDAO.getTransaction(testFile)
+    assert (tx != None)
+    assert (tx.get._id == testFile.tx_id.get)
+  }
+  test("The getTransaction method should return None if tx_id is not set"){
+    val id = FileDAO.insert(testFile)
+    assert(id != None)
+    val tx = FileDAO.getTransaction(testFile)
+    assert (tx == None)
+  }
+
 }
