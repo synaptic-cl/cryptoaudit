@@ -23,3 +23,6 @@ project/plugins/project/
 
 #IntelliJ-Idea specific
 .idea/
+
+#Lift specific
+*.props
