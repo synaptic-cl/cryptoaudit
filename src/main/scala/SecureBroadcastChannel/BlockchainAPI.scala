@@ -15,7 +15,10 @@ trait BlockchainAPI {
 }
 
 
-
+/**
+ * Class with the methods used to connect with the BlockChain REST API
+ *  described in https://blockchain.info/api
+ * */
 class BlockchainAPIRest extends BlockchainAPI with Get{
 
   def getUnspentOutputs(address:String):(Sha256Hash,Int,Int) = {
