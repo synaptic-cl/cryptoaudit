@@ -8,6 +8,9 @@ import org.bson.types.ObjectId
 
 /**
  * Created by fquintanilla on 19-01-15.
+ *
+ * Data Access Object for the Transaction Mongo collection
+ * it mediates all database operations for Transaction objects
  */
 object TransactionDAO extends SalatDAO[Transaction, ObjectId](collection = MongoFactory.mongoDB("Transaction")){
 
