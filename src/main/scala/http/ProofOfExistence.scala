@@ -9,6 +9,7 @@ import dispatch.Defaults._
  * Class with the methods used to connect with the ProofOfExistence.com API
  * http://proofofexistence.com/developers
  *
+ * Extends Post and encapsulates calls to a REST API as methods
  */
 
 object ProofOfExistence extends Post{

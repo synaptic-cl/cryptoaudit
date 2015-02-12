@@ -9,9 +9,16 @@ import org.bson.types.ObjectId
 
 /**
 * Created by fquintanilla on 19-01-15.
+ *
+ * Data Access Object for the CommittedLine Mongo collection
+ * it mediates all database operations for CommittedLine objects
 */
 object CommittedLineDAO extends SalatDAO[CommittedLine, ObjectId](collection = MongoFactory.mongoDB("CommittedLine")){
 
+  /**
+   * Inserts the given committedLine and returns its ObjectId only if its valid,
+   * otherwise returns None
+   * */
   override def insert(toPersist : CommittedLine) : Option[ObjectId] = {
     if (validate(toPersist)){
       super.insert(toPersist)

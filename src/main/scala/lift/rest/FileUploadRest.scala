@@ -42,6 +42,9 @@ object FileUploadRest extends RestHelper{
       }yield Extraction.decompose(response)
   }
 
+  /**
+   * Extract the uploaded file from the request
+   * */
   private def getUploadedFile(req : Req) : Box[FileParamHolder] = {
     req.uploadedFiles(0)
     val files = req.uploadedFiles
@@ -50,16 +53,19 @@ object FileUploadRest extends RestHelper{
   }
 
   private def processFile(fph : FileParamHolder) : Box[FileUploadResponse] = {
+    // Compute the merkle tree corresponding to the uploaded file
+    // TODO: Make this asynchronous so the client doesn't wait forever for the result
     val fileStream : InputStream = fph.fileStream
     val filename : String = fph.fileName
     val content : String = Source.fromInputStream(fileStream).mkString
     val lines = content.split("\n")
     val comm : StringArrayCommitment = new StringArrayCommitment(lines)
-    // TODO: Calcular BitcoinTransaction
+
+    //Publish the resulting commitment to the SBD
     val pKey : BigInteger = new BigInteger(propPrivateKey)
     val publisher = new BlockchainPublisher(pKey, comm.commitment)
     val tx_hash = publisher.publish()
-//    val tx_hash = comm.commitment
+    // Extract and persist relevant data
     val commitment = new Commitment(comm.root, comm.random)
     val tx = new Transaction(tx_hash, commitment)
     val txId = TransactionDAO.insert(tx)
@@ -73,6 +79,7 @@ object FileUploadRest extends RestHelper{
     val file : File = new File(txId, filename)
     val fileId = FileDAO.insert(file)
     if (fileId == None) return Empty
+    //Return success response
     Full(FileUploadResponse(fileId.get.toString))
   }
 

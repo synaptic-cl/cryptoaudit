@@ -38,6 +38,7 @@ object FileStatusRest extends RestHelper{
     if (file == None) return Empty
     val tx = FileDAO.getTransaction(file.get)
     val tx_hash = if (tx == None) "" else tx.get.transaction
+    //TODO: implement this as a query to the database to check the status
     Full(new StatusResponse(tx_hash, "pending", file.get.filename))
   }
 
